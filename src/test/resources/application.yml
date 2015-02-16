@@ -1,0 +1,4 @@
+gateway:
+  configuration:
+    readTimeout: 20000
+    connectTimeout: 20000
