@@ -1,4 +1,4 @@
-package org.talang.rest.devtools.testapp;
+package org.talang.rest.devtools.fullapptest.bookinventory.config;
 
 import org.talang.rest.devtools.config.RestConfiguration;
 import org.springframework.context.annotation.ComponentScan;

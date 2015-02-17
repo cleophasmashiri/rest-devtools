@@ -1,4 +1,4 @@
-package org.talang.rest.devtools.testapp;
+package org.talang.rest.devtools.web;
 
 
 import org.junit.Test;
@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
+import org.talang.rest.devtools.fullapptest.bookinventory.TestApplication;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -16,7 +17,7 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestApplication.class, loader = SpringApplicationContextLoader.class)
 @WebAppConfiguration
-public class ApplicationSetupTest {
+public class TestApplicationSetupTest {
     @Autowired
     RestTemplate restTemplate;
 
