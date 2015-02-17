@@ -1,5 +1,6 @@
 package org.talang.rest.devtools.testapp;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.talang.rest.devtools.gateway.GatewayException;
 import org.talang.rest.devtools.web.CommonRestErrors;
 import org.talang.rest.devtools.web.RestException;
@@ -15,6 +16,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/api/example")
 public class ExampleResource {
+
+    @Autowired
+    ExampleGateway gateway;
+
 
     @RequestMapping(value = "/stringlist",
             method = RequestMethod.GET,
@@ -61,5 +66,24 @@ public class ExampleResource {
     @ResponseBody
     public List<String> throwGatewayException() {
         throw new GatewayException(RestUtils.createErrorDTOFromRestError(CommonRestErrors.GENERAL_UPDATE_CODE_CONFLICT.toRestError()),CommonRestErrors.GENERAL_UPDATE_CODE_CONFLICT.getHttpStatus());
+    }
+
+    @RequestMapping(value = "/gateway/getexample",
+            method = RequestMethod.GET,
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ExampleDTO getExample() {
+        return gateway.getExampleDTO();
+    }
+
+
+    @RequestMapping(value = "/gateway/putexample",
+            method = RequestMethod.PUT,
+            consumes = APPLICATION_JSON_VALUE,
+    produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public void putExample(@RequestBody ExampleDTO exampleDTO) {
+         gateway.putExampleDTO(exampleDTO);
     }
 }

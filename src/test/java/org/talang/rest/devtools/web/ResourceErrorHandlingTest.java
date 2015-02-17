@@ -1,5 +1,11 @@
 package org.talang.rest.devtools.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.talang.rest.devtools.testapp.ExampleDTO;
+import org.talang.rest.devtools.testapp.ExampleGateway;
 import org.talang.rest.devtools.testapp.ExampleResource;
 import org.talang.rest.devtools.testapp.TestApplication;
 import org.junit.Before;
@@ -17,6 +23,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,34 +40,62 @@ public class ResourceErrorHandlingTest {
     private ExampleResource exampleResource;
 
 
-    private MockRestServiceServer mockServer;
-
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    ExampleGateway exampleGateway;
 
     @Autowired
     WebApplicationContext wac;
 
     MockMvc mockMvc;
 
+
+    private MockRestServiceServer mockServer;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Before
     public void setUp() {
-        mockServer = MockRestServiceServer.createServer(restTemplate);
+        mockServer = MockRestServiceServer.createServer(exampleGateway.getRestTemplate());
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-
-        // mockMvc = MockMvcBuilders.standaloneSetup (.setMessageConverters(new MappingJackson2HttpMessageConverter()).setHandlerExceptionResolvers(createExceptionResolver()).build();
     }
 
-//    private ExceptionHandlerExceptionResolver createExceptionResolver() {
-//        ExceptionHandlerExceptionResolver exceptionResolver = new ExceptionHandlerExceptionResolver() {
-//            protected ServletInvocableHandlerMethod getExceptionHandlerMethod(HandlerMethod handlerMethod, Exception exception) {
-//                Method method = new ExceptionHandlerMethodResolver(RestExceptionHandler.class).resolveMethod(exception);
-//                return new ServletInvocableHandlerMethod(new RestExceptionHandler(), method);
-//            }
-//        };
-//        exceptionResolver.afterPropertiesSet();
-//        return exceptionResolver;
-//    }
+
+    @Test
+    public void testGatewayGetServerError() throws Exception {
+        mockServer.expect(requestTo(ExampleGateway.GATEWAY_ENDPOINT))
+                .andRespond(withServerError());
+        mockMvc.perform(get("/api/example/gateway/getexample"))
+                .andExpect(status().is5xxServerError()).andExpect(content().string("{\"errorCode\":\"GENERAL_GATEWAY_ERROR\",\"errorMessage\":\"Internal Server Error\",\"params\":{\"statusText\":\"Internal Server Error\",\"message\":\"500 Internal Server Error\"}}"));
+    }
+
+    @Test
+    public void testGatewayGetBadRequest() throws Exception {
+        mockServer.expect(requestTo(ExampleGateway.GATEWAY_ENDPOINT))
+                .andRespond(withBadRequest());
+        mockMvc.perform(get("/api/example/gateway/getexample"))
+                .andExpect(status().is4xxClientError()).andExpect(content().string("{\"errorCode\":\"GENERAL_GATEWAY_ERROR\",\"errorMessage\":\"Bad Request\",\"params\":{\"statusText\":\"Bad Request\",\"message\":\"400 Bad Request\"}}"));
+    }
+
+    @Test
+    public void testGatewayPutServerError() throws Exception {
+        mockServer.expect(requestTo(ExampleGateway.GATEWAY_ENDPOINT))
+                .andRespond(withServerError());
+        ResultActions resultActions = mockMvc.perform(put("/api/example/gateway/putexample").content(objectMapper.writeValueAsString(new ExampleDTO())).contentType(MediaType.APPLICATION_JSON_VALUE));
+        resultActions.andExpect(status().is5xxServerError()).andExpect(content().string("{\"errorCode\":\"GENERAL_GATEWAY_ERROR\",\"errorMessage\":\"Internal Server Error\",\"params\":{\"statusText\":\"Internal Server Error\",\"message\":\"500 Internal Server Error\"}}"));
+    }
+
+    @Test
+    public void testGatewayPutBadRequest() throws Exception {
+        mockServer.expect(requestTo(ExampleGateway.GATEWAY_ENDPOINT))
+                .andRespond(withBadRequest());
+        ResultActions resultActions = mockMvc.perform(put("/api/example/gateway/putexample").content(objectMapper.writeValueAsString(new ExampleDTO())).contentType(MediaType.APPLICATION_JSON_VALUE));
+        resultActions.andExpect(status().is4xxClientError()).andExpect(content().string("{\"errorCode\":\"GENERAL_GATEWAY_ERROR\",\"errorMessage\":\"Bad Request\",\"params\":{\"statusText\":\"Bad Request\",\"message\":\"400 Bad Request\"}}"));
+    }
+
 
     @Test
     public void testExampleResourceStringlist() throws Exception {
@@ -71,8 +109,6 @@ public class ResourceErrorHandlingTest {
                 .andExpect(status().is(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())).andExpect(content()
                 .string("{\"errorCode\":\"GENERAL_MEDIA_TYPE_NOT_SUPPORTED\",\"errorMessage\":\"Media type not supported\",\"params\":{\"UnsupportedContentType\":\"Unsupported content type: null\",\"supportedContentType\":\"Supported content types: application/json\",\"exceptionMessage\":\"Content type 'null' not supported\"}}"));
     }
-
-
 
 
     @Test

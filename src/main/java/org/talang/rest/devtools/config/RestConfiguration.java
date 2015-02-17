@@ -46,6 +46,7 @@ public class RestConfiguration extends WebMvcConfigurerAdapter {
         JodaModule jodaModule = new JodaModule();
         objectMapper.registerModule(new JodaModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
         return objectMapper;
     }
 

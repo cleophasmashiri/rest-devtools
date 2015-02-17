@@ -3,6 +3,8 @@ package org.talang.rest.devtools.gateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.talang.rest.devtools.web.ErrorDTO;
 import org.talang.rest.devtools.web.CommonRestErrors;
+import org.talang.rest.devtools.web.RestError;
+import org.talang.rest.devtools.web.util.PNV;
 import org.talang.rest.devtools.web.util.RestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,9 @@ public class GatewayExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GatewayExceptionHandler.class);
 
+    public static final String GENERAL_GATEWAY_ERROR = "GENERAL_GATEWAY_ERROR";
+
+
     public static void handleRestClientException(RestClientException ex, String endpointUrl, Object payload){
         if(ex instanceof HttpStatusCodeException){
             handleHttpStatusCodeException((HttpStatusCodeException) ex,endpointUrl, payload);
@@ -31,12 +36,18 @@ public class GatewayExceptionHandler {
     }
 
 
-    protected static ErrorDTO getErrorFromHttpStatusCodeException(HttpStatusCodeException e) {
+    protected static ErrorDTO getErrorFromHttpStatusCodeException(HttpStatusCodeException statusCodeEx) {
         ErrorDTO error = null;
         try {
-            error = new ObjectMapper().readValue(e.getResponseBodyAsByteArray(), ErrorDTO.class);
+            error = new ObjectMapper().readValue(statusCodeEx.getResponseBodyAsByteArray(), ErrorDTO.class);
         } catch (Exception ex) {
-            LOGGER.error("Could not deserialize ErrorDTO", ex);
+            LOGGER.error("Could not deserialize ErrorDTO");
+            error = RestUtils.createErrorDTOFromRestError(
+                    new RestError(GENERAL_GATEWAY_ERROR,statusCodeEx.getStatusText(),statusCodeEx.getStatusCode()),
+                    RestUtils.createParams(
+                            PNV.toPNV("statusText", statusCodeEx.getStatusText()),
+                            PNV.toPNV("message",statusCodeEx.getMessage())
+                    ));
         }
         return error;
     }
