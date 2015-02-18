@@ -1,7 +1,7 @@
 README for rest-devtools
 ========================
 Developer tools for Spring based Rest applications. 
-Offering solutions for:
+Offering solutions for:<br/>
 1, Logging, converting object to it's String representation<br/>
 2, Logging, define logger for components by interface default method<br/>
 3, Interfaces, Indentifiable, CreatedTrackable, etc.<br/>
