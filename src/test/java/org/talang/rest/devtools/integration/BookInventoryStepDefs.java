@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,9 +53,15 @@ public class BookInventoryStepDefs {
         bookRepo.save(bookList);
     }
 
-    @Given("^the isbn gateway is mocked$")
-    public void requestHeaderWillBeSentWithRequest() {
+    @Given("^the isbn gateway is mocked to success$")
+    public void isbnGatewayIsMockedToSuccessResponse() {
         mockServer.expect(requestTo(IsbnGateway.ISBN_GATEWAY_ENDPOINT))
                 .andRespond(withSuccess("isbn1234", MediaType.APPLICATION_JSON));
+    }
+
+    @Given("^the isbn gateway is mocked to error$")
+    public void isbnGatewayIsMockedToErrorResponse() {
+        mockServer.expect(requestTo(IsbnGateway.ISBN_GATEWAY_ENDPOINT))
+                .andRespond(withServerError());
     }
 }

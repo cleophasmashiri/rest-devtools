@@ -4,13 +4,27 @@ Feature: Example Resource Integration Test
   Scenario: create a book
     Given the web context is set
     Given the db is empty
-    Given the isbn gateway is mocked
+    Given the isbn gateway is mocked to success
     When client request POST /api/books with json data:
     """
     {"isbn":null,"title":"my book","author":"me"}
     """
     Then the response code should be 201
     Then the following header should present "Location" with value "http://localhost/api/books/isbn1234"
+
+  Scenario: create a book gateway error
+    Given the web context is set
+    Given the db is empty
+    Given the isbn gateway is mocked to error
+    When client request POST /api/books with json data:
+    """
+    {"isbn":null,"title":"my book","author":"me"}
+    """
+    Then the response code should be 500
+    Then the result json should be:
+    """
+    {"errorCode":"GENERAL_GATEWAY_ERROR","errorMessage":"Internal Server Error","params":{"statusText":"Internal Server Error","message":"500 Internal Server Error"}}
+    """
 
   Scenario: find by isbn
     Given the web context is set
@@ -25,6 +39,16 @@ Feature: Example Resource Integration Test
     Then the result json should be:
     """
     {"isbn":"n125","title":"To Kill a Mockingbird","author":"Harper lee"}
+    """
+
+  Scenario: find by isbn -> no result
+    Given the web context is set
+    Given the db is empty
+    When client request GET /api/books/not-existing-isbn
+    Then the response code should be 404
+    Then the result json should be:
+    """
+    {"errorCode":"BOOK_NOT_FOUND","errorMessage":"The book was not found.","params":{"isbn":"not-existing-isbn"}}
     """
 
   Scenario: find by author

@@ -2,12 +2,16 @@ package org.talang.rest.devtools.fullapptest.bookinventory.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.talang.rest.devtools.fullapptest.bookinventory.api.RestErrors;
 import org.talang.rest.devtools.logging.Loggable;
 import org.talang.rest.devtools.fullapptest.bookinventory.domain.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.talang.rest.devtools.fullapptest.bookinventory.gateway.IsbnGateway;
 import org.talang.rest.devtools.fullapptest.bookinventory.api.BookDTO;
 import org.talang.rest.devtools.fullapptest.bookinventory.repository.BookRepository;
+import org.talang.rest.devtools.web.RestException;
+import org.talang.rest.devtools.web.util.PNV;
+import org.talang.rest.devtools.web.util.RestUtils;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -55,6 +59,10 @@ public class BookServiceImpl implements Loggable, BookService {
     public BookDTO findByIsbn(String isbn){
         logger().debug("Find by isbn '{}'",isbn);
         Book retrievedBook = bookRepo.findByIsbn(isbn);
+        if(retrievedBook == null){
+            throw new RestException(RestErrors.BOOK_NOT_FOUND.toRestError(),
+                    RestUtils.createParams(PNV.toPNV("isbn",isbn)));
+        }
         return bookToBookDTO.apply(retrievedBook);
 
     }

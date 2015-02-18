@@ -16,6 +16,7 @@
         <cucumber-java.version>1.1.7</cucumber-java.version>
         <cucumber-pro.version>1.0.6</cucumber-pro.version>
         <xml-apis.version>1.4.01</xml-apis.version>
+        <maven-release-plugin.version>2.2.2</maven-release-plugin.version>
     </properties>
 
     <parent>
@@ -221,11 +222,24 @@
             </plugins>
         </pluginManagement>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
+
+
+    <scm>
+        <connection>scm:git:git://github.com/tamaslang/rest-devtools.git</connection>
+        <developerConnection>scm:git:git@github.com:tamaslang/rest-devtools.git</developerConnection>
+        <url>http://github.com/tamaslang/rest-devtools</url>
+    </scm>
 
 </project>
