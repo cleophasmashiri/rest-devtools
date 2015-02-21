@@ -63,7 +63,7 @@ public class BookResource implements Loggable{
     }
 
 
-    @RequestMapping(value="/all",
+    @RequestMapping(
             method = RequestMethod.GET,
             produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

@@ -90,7 +90,7 @@ Feature: Example Resource Integration Test
       | n123  | Hamlet                |  William Shakespeare |
       | n124  | Romeo and Juliet      |  William Shakespeare |
       | n125  | To Kill a Mockingbird |  Harper lee          |
-    When client request GET /api/books/all
+    When client request GET /api/books
     Then the response code should be 200
     Then the result json should be:
     """

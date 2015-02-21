@@ -48,7 +48,7 @@ public class BookServiceImpl implements Loggable, BookService {
     @Transactional
     public void update(String isbn, BookDTO bookDTO){
         logger().debug("Update book for isbn '{}' : {}",isbn, bookDTO);
-        Book retrievedBook = bookRepo.findByIsbn(isbn);
+        Book retrievedBook = bookRepo.findOne(isbn);
         retrievedBook.setAuthor(bookDTO.getAuthor());
         retrievedBook.setTitle(bookDTO.getTitle());
         bookRepo.save(retrievedBook);
@@ -58,7 +58,7 @@ public class BookServiceImpl implements Loggable, BookService {
     @Override
     public BookDTO findByIsbn(String isbn){
         logger().debug("Find by isbn '{}'",isbn);
-        Book retrievedBook = bookRepo.findByIsbn(isbn);
+        Book retrievedBook = bookRepo.findOne(isbn);
         if(retrievedBook == null){
             throw new RestException(RestErrors.BOOK_NOT_FOUND.toRestError(),
                     RestUtils.createParams(PNV.toPNV("isbn",isbn)));

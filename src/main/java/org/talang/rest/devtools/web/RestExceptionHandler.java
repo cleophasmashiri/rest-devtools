@@ -1,5 +1,6 @@
 package org.talang.rest.devtools.web;
 
+import org.talang.rest.devtools.logging.Loggable;
 import org.talang.rest.devtools.web.util.RestUtils;
 import org.talang.rest.devtools.gateway.GatewayException;
 import org.talang.rest.devtools.web.util.PNV;
@@ -28,9 +29,7 @@ import java.util.List;
  * Very much based on this article: http://www.petrikainulainen.net/programming/spring-framework/spring-from-the-trenches-adding-validation-to-a-rest-api/
  */
 @ControllerAdvice
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
-
+public class RestExceptionHandler extends ResponseEntityExceptionHandler implements Loggable{
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -81,14 +80,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RestException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> handleRestException(RestException ex){
-        LOGGER.error("Handling rest exception", ex);
+        logger().error("Handling rest exception", ex);
         return new ResponseEntity<ErrorDTO>(RestUtils.createErrorDTOFromRestError(ex.toRestError(), ex.getErrorParams()), ex.toRestError().getHttpStatus());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> handleException(Exception ex){
-        LOGGER.error("Handling exception", ex);
+        logger().error("Handling exception", ex);
         return new ResponseEntity<ErrorDTO>(RestUtils.createErrorDTOFromRestError(CommonRestErrors.GENERAL_SERVICE_ERROR.toRestError(),
                 RestUtils.createParams(PNV.toPNV("details", ex.getMessage()))),
                 CommonRestErrors.GENERAL_SERVICE_ERROR.getHttpStatus());
@@ -97,7 +96,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(GatewayException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> handleGatewayException(GatewayException ex){
-        LOGGER.error("Handling gateway exception", ex);
+        logger().error("Handling gateway exception", ex);
         return new ResponseEntity<ErrorDTO>(ex.getErrorDTO(), ex.getHttpStatus());
     }
 

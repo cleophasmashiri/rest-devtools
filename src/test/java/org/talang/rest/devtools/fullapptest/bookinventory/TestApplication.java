@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.talang.rest.devtools.fullapptest.bookinventory.config.RestDevtoolsConfig;
+import org.talang.rest.devtools.logging.Loggable;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -21,20 +22,18 @@ import java.io.IOException;
 @Import(RestDevtoolsConfig.class)
 @EnableJpaRepositories
 @EnableAspectJAutoProxy
-public class TestApplication {
+public class TestApplication implements Loggable {
     @Resource
     private Environment env;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestApplication.class);
 
     private RelaxedPropertyResolver dataSourcePropertyResolver;
 
     @PostConstruct
     public void initApplication() throws IOException {
         if (env.getActiveProfiles().length == 0) {
-            LOGGER.warn("No Spring profile configured, running with default configuration");
+            logger().warn("No Spring profile configured, running with default configuration");
         } else {
-            LOGGER.info("Running with Spring profile(s) : {}", env.getActiveProfiles());
+            logger().info("Running with Spring profile(s) : {}", env.getActiveProfiles());
             this.dataSourcePropertyResolver = new RelaxedPropertyResolver(env, "jmx.");
         }
     }

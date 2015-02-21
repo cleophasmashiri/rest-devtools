@@ -235,11 +235,4 @@
         </plugins>
     </build>
 
-
-    <scm>
-        <connection>scm:git:git://github.com/tamaslang/rest-devtools.git</connection>
-        <developerConnection>scm:git:git@github.com:tamaslang/rest-devtools.git</developerConnection>
-        <url>http://github.com/tamaslang/rest-devtools</url>
-    </scm>
-
 </project>

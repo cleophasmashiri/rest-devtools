@@ -10,17 +10,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.talang.rest.devtools.logging.Loggable;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(value = {DatabaseConfiguration.REPOSITORY_LOCATION}, entityManagerFactoryRef = "entityManagerFactory", transactionManagerRef = "transactionManager")
-public class DatabaseConfiguration implements EnvironmentAware {
+public class DatabaseConfiguration implements EnvironmentAware, Loggable {
 
     public static final String REPOSITORY_LOCATION = "org.talang.rest.devtools.repository";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConfiguration.class);
     public static final String CHANGELOG_LOCATION = "classpath:config/liquibase/db-changelog.xml";
 
     @Resource
@@ -33,7 +33,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 
     @Bean(name = "liquibase")
     public SpringLiquibase liquibase() {
-        LOGGER.debug("Configuring Liquibase for Ref data");
+        logger().debug("Configuring Liquibase for Ref data");
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource);
         liquibase.setChangeLog(CHANGELOG_LOCATION);

@@ -68,7 +68,7 @@ public class BookInventoryWithMockedGatewayTest {
         // validate header
         assertEquals("http://localhost/api/books/isbn1234", resultActions.andReturn().getResponse().getHeader("location"));
         // validate db
-        Book book = bookRepository.findByIsbn("isbn1234");
+        Book book = bookRepository.findOne("isbn1234");
         assertNotNull(book);
         assertEquals("title", book.getTitle());
         assertEquals("author",book.getAuthor());

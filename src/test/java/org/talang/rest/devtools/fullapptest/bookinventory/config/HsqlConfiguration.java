@@ -6,12 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.talang.rest.devtools.logging.Loggable;
 
 @Configuration
-public class HsqlConfiguration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(HsqlConfiguration.class);
-
+public class HsqlConfiguration implements Loggable{
     /**
      * HSQL Server bean available for remote access.
      *
@@ -20,10 +18,10 @@ public class HsqlConfiguration {
     @Bean(initMethod = "start", destroyMethod = "shutdown")
     public Server hsqlServer() {
         try {
-            LOGGER.debug("Starting HSQL server");
+            logger().debug("Starting HSQL server");
             Server server = new Server();
 
-            server.setDatabaseName(0, "spectrum-postgres-data");
+            server.setDatabaseName(0, "sql-database");
 
             server.setTrace(false);
             return server;

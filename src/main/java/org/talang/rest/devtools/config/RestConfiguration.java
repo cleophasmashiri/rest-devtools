@@ -14,11 +14,12 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.talang.rest.devtools.logging.Loggable;
 
 import java.util.List;
 
 @Configuration
-public class RestConfiguration extends WebMvcConfigurerAdapter {
+public class RestConfiguration extends WebMvcConfigurerAdapter implements Loggable {
 
     @Autowired
     private Environment env;
@@ -26,13 +27,11 @@ public class RestConfiguration extends WebMvcConfigurerAdapter {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestConfiguration.class);
-
     @Bean
     public RestTemplate restTemplate() {
         int readTimeout = Integer.parseInt(env.getProperty("gateway.configuration.readTimeout"));
         int connectTimeout = Integer.parseInt(env.getProperty("gateway.configuration.connectTimeout"));
-        LOGGER.debug("Create RestTemplate with readTimeout={}, connectTimeout={}", readTimeout, connectTimeout);
+        logger().debug("Create RestTemplate with readTimeout={}, connectTimeout={}", readTimeout, connectTimeout);
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
         httpRequestFactory.setConnectTimeout(connectTimeout);
         httpRequestFactory.setReadTimeout(readTimeout);

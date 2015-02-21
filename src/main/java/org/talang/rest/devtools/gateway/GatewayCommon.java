@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.talang.rest.devtools.logging.Loggable;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,9 +19,7 @@ import java.util.List;
 /**
  * Created by tamaslang on 24/11/14.
  */
-public abstract class GatewayCommon {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GatewayCommon.class);
+public abstract class GatewayCommon implements Loggable{
 
     @Autowired
     private RestTemplate restTemplate;
@@ -38,7 +37,7 @@ public abstract class GatewayCommon {
         componentBuilder.pathSegment(code);
         ResponseEntity<T> responseEntity = null;
         try {
-            LOGGER.debug("Calling endpoint {}", componentBuilder.build().toString());
+            logger().debug("Calling endpoint {}", componentBuilder.build().toString());
             responseEntity = getRestTemplate().getForEntity(componentBuilder.build().toString(), responseClass, Collections.emptyMap());
         } catch (RestClientException ex){
             GatewayExceptionHandler.handleRestClientException(ex, componentBuilder.build().toString(), null);
@@ -57,9 +56,9 @@ public abstract class GatewayCommon {
 
         ResponseEntity<T> responseEntity = null;
         try {
-            LOGGER.debug("Calling POST on endpoint {}", componentBuilder.build().toString());
+            logger().debug("Calling POST on endpoint {}", componentBuilder.build().toString());
             responseEntity = getRestTemplate().postForEntity(componentBuilder.build().toString(), payload, responseType);
-            LOGGER.debug("Get response entity {}",responseEntity.getBody());
+            logger().debug("Get response entity {}", responseEntity.getBody());
         } catch (RestClientException ex){
             GatewayExceptionHandler.handleRestClientException(ex, componentBuilder.build().toString(), null);
             return null;
@@ -71,7 +70,7 @@ public abstract class GatewayCommon {
         UriComponentsBuilder componentBuilder = UriComponentsBuilder.fromHttpUrl(endpointUrl);
         ResponseEntity<T> responseEntity = null;
         try {
-            LOGGER.debug("Calling GET on endpoint {}", componentBuilder.build().toString());
+            logger().debug("Calling GET on endpoint {}", componentBuilder.build().toString());
             responseEntity = getRestTemplate().getForEntity(componentBuilder.build().toString(), responseClass, Collections.emptyMap());
         } catch (RestClientException ex){
             GatewayExceptionHandler.handleRestClientException(ex, componentBuilder.build().toString(), null);
@@ -85,7 +84,7 @@ public abstract class GatewayCommon {
         ResponseEntity<T> responseEntity = null;
         HttpEntity entityWithHeaders = new HttpEntity<>(httpHeaders);
         try {
-            LOGGER.debug("Calling GET on endpoint {}", componentBuilder.build().toString());
+            logger().debug("Calling GET on endpoint {}", componentBuilder.build().toString());
             responseEntity = getRestTemplate().exchange(componentBuilder.build().toString(),
                     HttpMethod.GET, entityWithHeaders, responseClass);
         } catch (RestClientException ex){
@@ -100,9 +99,9 @@ public abstract class GatewayCommon {
 
         ResponseEntity<T> responseEntity = null;
         try {
-            LOGGER.debug("Calling POST on endpoint {}", componentBuilder.build().toString());
+            logger().debug("Calling POST on endpoint {}", componentBuilder.build().toString());
             responseEntity = getRestTemplate().postForEntity(componentBuilder.build().toString(), payload, responseType);
-            LOGGER.debug("Get response entity {}",responseEntity.getBody());
+            logger().debug("Get response entity {}", responseEntity.getBody());
         } catch (RestClientException ex){
             GatewayExceptionHandler.handleRestClientException(ex, componentBuilder.build().toString(), null);
             return null;
@@ -114,7 +113,7 @@ public abstract class GatewayCommon {
         UriComponentsBuilder componentBuilder = UriComponentsBuilder.fromHttpUrl(endpointUrl);
 
         try {
-            LOGGER.debug("Calling PUT on endpoint {}", componentBuilder.build().toString());
+            logger().debug("Calling PUT on endpoint {}", componentBuilder.build().toString());
             this.getRestTemplate().put(componentBuilder.build().toString(), payload);
         } catch (RestClientException ex){
             GatewayExceptionHandler.handleRestClientException(ex, componentBuilder.build().toString(), null);
@@ -125,7 +124,7 @@ public abstract class GatewayCommon {
         UriComponentsBuilder componentBuilder = UriComponentsBuilder.fromHttpUrl(endpointUrl);
 
         try {
-            LOGGER.debug("Calling DELETE on endpoint {}", componentBuilder.build().toString());
+            logger().debug("Calling DELETE on endpoint {}", componentBuilder.build().toString());
             this.getRestTemplate().delete(componentBuilder.build().toString());
         } catch (RestClientException ex){
             GatewayExceptionHandler.handleRestClientException(ex, componentBuilder.build().toString(), null);
@@ -158,10 +157,10 @@ public abstract class GatewayCommon {
             httpEntity = new HttpEntity<>(payload);
         }
         try {
-            LOGGER.debug("Calling {} for list on endpoint {}", httpMethod, componentBuilder.build().toString());
+            logger().debug("Calling {} for list on endpoint {}", httpMethod, componentBuilder.build().toString());
             responseEntity = getRestTemplate().exchange(componentBuilder.build().toString(), httpMethod,
                     httpEntity, typeReference);
-            LOGGER.debug("Get response for list {}",responseEntity.getBody());
+            logger().debug("Get response for list {}",responseEntity.getBody());
         } catch (RestClientException ex){
             GatewayExceptionHandler.handleRestClientException(ex, componentBuilder.build().toString(), null);
             return null;
