@@ -10,6 +10,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.talang.rest.devtools.fullapptest.bookinventory.config.DatabaseConfiguration;
 import org.talang.rest.devtools.fullapptest.bookinventory.config.RestDevtoolsConfig;
 import org.talang.rest.devtools.logging.Loggable;
 
@@ -19,9 +20,8 @@ import java.io.IOException;
 
 @ComponentScan
 @EnableAutoConfiguration
-@Import(RestDevtoolsConfig.class)
+@Import({RestDevtoolsConfig.class})
 @EnableJpaRepositories
-@EnableAspectJAutoProxy
 public class TestApplication implements Loggable {
     @Resource
     private Environment env;
