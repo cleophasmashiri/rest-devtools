@@ -25,9 +25,38 @@
         <version>1.2.1.RELEASE</version>
     </parent>
 
-    <groupId>org.talang.rest</groupId>
+
+
+
+    <name>Rest DevTools library</name>
+    <description>Library to ease developing Spring based Rest application</description>
+    <url>http://www.talangsoft.org/</url>
+
+    <!-- List the core committers -->
+    <developers>
+        <developer>
+            <id>tamas.lang</id>
+            <name>Tamas Lang</name>
+            <organization>Talang Soft Limited</organization>
+            <organizationUrl>http://www.talangsoft.org</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>0</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <groupId>org.talang</groupId>
     <artifactId>rest-devtools</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -217,17 +246,18 @@
             </plugins>
         </pluginManagement>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-            </plugin>
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Staging Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
