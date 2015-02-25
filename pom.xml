@@ -54,7 +54,7 @@
         </license>
     </licenses>
 
-    <groupId>org.talang</groupId>
+    <groupId>org.talangsoft</groupId>
     <artifactId>rest-devtools</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
