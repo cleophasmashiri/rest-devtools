@@ -272,17 +272,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <!-- explicitly define maven-deploy-plugin after other to force exec order -->
-                <artifactId>maven-deploy-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>deploy</id>
-                        <phase>deploy</phase>
-                        <goals><goal>deploy</goal></goals>
-                    </execution>
-                </executions>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -295,6 +284,18 @@
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!-- explicitly define maven-deploy-plugin after other to force exec order -->
+                <artifactId>maven-deploy-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>deploy</id>
+                        <phase>deploy</phase>
+                        <goals><goal>deploy</goal></goals>
                     </execution>
                 </executions>
             </plugin>

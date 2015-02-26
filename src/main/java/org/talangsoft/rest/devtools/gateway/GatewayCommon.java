@@ -44,26 +44,6 @@ public abstract class GatewayCommon implements Loggable {
         return responseEntity.getBody();
     }
 
-    /**
-     * Deprecated use genericPost instead
-     */
-    @Deprecated
-    public <T> T genericAddNew(String endpoint, Object payload, Class<T> responseType) {
-
-        UriComponentsBuilder componentBuilder = UriComponentsBuilder.fromHttpUrl(endpoint);
-
-        ResponseEntity<T> responseEntity = null;
-        try {
-            logger().debug("Calling POST on endpoint {}", componentBuilder.build().toString());
-            responseEntity = getRestTemplate().postForEntity(componentBuilder.build().toString(), payload, responseType);
-            logger().debug("Get response entity {}", responseEntity.getBody());
-        } catch (RestClientException ex){
-            GatewayExceptionHandler.handleRestClientException(ex, componentBuilder.build().toString(), null);
-            return null;
-        }
-        return responseEntity.getBody();
-    }
-
     public <T> T genericGet(String endpointUrl, Class<T> responseClass) {
         UriComponentsBuilder componentBuilder = UriComponentsBuilder.fromHttpUrl(endpointUrl);
         ResponseEntity<T> responseEntity = null;
@@ -130,13 +110,13 @@ public abstract class GatewayCommon implements Loggable {
     }
 
     /**
-     *  example usage: genericGetForList(componentBuilder.build().toString(),BookDTO.class, new ParameterizedTypeReference<List<BookDTO>>() {});
+     *  Execute a GET action on the endpoint to get a generic typed list
      *
-     * @param endpointUrl
-     * @param listElementClass
-     * @param typeReference
-     * @param <T>
-     * @return
+     * @param endpointUrl the url of the endpoint which is to be called with GET action
+     * @param listElementClass the class of the result list element
+     * @param typeReference the typereference, needs to be passed because of Java generic behaviour
+     * @param <T> entity type for return entity
+     * @return the List of entities with type
      */
     public <T> List<T> genericGetForList(String endpointUrl, Class<T> listElementClass, ParameterizedTypeReference typeReference) {
         return genericForAllHttpMethodForList(endpointUrl, HttpMethod.GET, null, typeReference);
@@ -144,28 +124,28 @@ public abstract class GatewayCommon implements Loggable {
 
     /**
      *
-     * example usage: genericPostForList(componentBuilder.build().toString(),BookSearchDTO.class, new ParameterizedTypeReference<List<BookDTO>>() {});
+     * Execute a POST action on the endpoint to get a generic typed list
      *
-     * @param endpointUrl
-     * @param payload
-     * @param listElementClass
-     * @param typeReference
-     * @param <T>
-     * @return
+     * @param endpointUrl the url of the endpoint which is to be called with GET action
+     * @param payload the payload to send with post
+     * @param listElementClass the class of the result list element
+     * @param typeReference the typereference, needs to be passed because of Java generic behaviour
+     * @param <T> entity type for return entity
+     * @return the List of entities with type
      */
     public <T> List<T> genericPostForList(String endpointUrl, Object payload, Class<T> listElementClass,ParameterizedTypeReference typeReference) {
         return genericForAllHttpMethodForList(endpointUrl, HttpMethod.POST, payload, typeReference);
     }
 
     /**
-     * usage: genericForAllHttpMethodForList(componentBuilder.build().toString(),HttpMethod.POST, BookSearchDTO.class, new ParameterizedTypeReference<List<BookDTO>>() {});
+     * Execute an ACTION on the endpoint with payload to get a generic typed list
      *
-     * @param endpointUrl
-     * @param httpMethod
-     * @param payload
-     * @param typeReference
-     * @param <T>
-     * @return
+     * @param endpointUrl the url of the endpoint which is to be called with GET action
+     * @param httpMethod the httpmethod to be executed
+     * @param payload the payload to send with the action
+     * @param typeReference the typereference, needs to be passed because of Java generic behaviour
+     * @param <T> entity type for return entity
+     * @return the List of entities with type
      */
     public <T> List<T> genericForAllHttpMethodForList(String endpointUrl,HttpMethod httpMethod, Object payload, ParameterizedTypeReference typeReference) {
         UriComponentsBuilder componentBuilder = UriComponentsBuilder.fromHttpUrl(endpointUrl);
