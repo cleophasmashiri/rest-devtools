@@ -129,22 +129,43 @@ public abstract class GatewayCommon implements Loggable {
         }
     }
 
-    /*
-    usage: genericGetForList(componentBuilder.build().toString(),AuditSummarySvcDTO.class, new ParameterizedTypeReference<List<AuditSummarySvcDTO>>() {});
+    /**
+     *  example usage: genericGetForList(componentBuilder.build().toString(),BookDTO.class, new ParameterizedTypeReference<List<BookDTO>>() {});
+     *
+     * @param endpointUrl
+     * @param listElementClass
+     * @param typeReference
+     * @param <T>
+     * @return
      */
     public <T> List<T> genericGetForList(String endpointUrl, Class<T> listElementClass, ParameterizedTypeReference typeReference) {
         return genericForAllHttpMethodForList(endpointUrl, HttpMethod.GET, null, typeReference);
     }
 
-    /*
-    usage: genericPostForList(componentBuilder.build().toString(),AuditSummarySvcDTO.class, new ParameterizedTypeReference<List<AuditSummarySvcDTO>>() {});
+    /**
+     *
+     * example usage: genericPostForList(componentBuilder.build().toString(),BookSearchDTO.class, new ParameterizedTypeReference<List<BookDTO>>() {});
+     *
+     * @param endpointUrl
+     * @param payload
+     * @param listElementClass
+     * @param typeReference
+     * @param <T>
+     * @return
      */
     public <T> List<T> genericPostForList(String endpointUrl, Object payload, Class<T> listElementClass,ParameterizedTypeReference typeReference) {
         return genericForAllHttpMethodForList(endpointUrl, HttpMethod.POST, payload, typeReference);
     }
 
-    /*
-    usage: genericForAllHttpMethodForList(componentBuilder.build().toString(),HttpMethod.POST, AuditSummarySvcDTO.class, new ParameterizedTypeReference<List<AuditSummarySvcDTO>>() {});
+    /**
+     * usage: genericForAllHttpMethodForList(componentBuilder.build().toString(),HttpMethod.POST, BookSearchDTO.class, new ParameterizedTypeReference<List<BookDTO>>() {});
+     *
+     * @param endpointUrl
+     * @param httpMethod
+     * @param payload
+     * @param typeReference
+     * @param <T>
+     * @return
      */
     public <T> List<T> genericForAllHttpMethodForList(String endpointUrl,HttpMethod httpMethod, Object payload, ParameterizedTypeReference typeReference) {
         UriComponentsBuilder componentBuilder = UriComponentsBuilder.fromHttpUrl(endpointUrl);
