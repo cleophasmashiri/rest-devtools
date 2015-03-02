@@ -10,7 +10,14 @@ Offering solutions for:<br/>
 6, Rest exception handling and resolving it to common ErrorDTO<br/>
 7, Gateway (external Rest calls) exception handling and resolve it to a common ErrorDTO<br/>
 
+### Version 1.0.0. Available in maven central
+http://search.maven.org/#artifactdetails%7Corg.talangsoft%7Crest-devtools%7C1.0.0%7Cjar
 
 
-
-
+```xml
+<dependency>
+    <groupId>org.talangsoft</groupId>
+    <artifactId>rest-devtools</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
