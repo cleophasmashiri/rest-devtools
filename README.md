@@ -21,3 +21,11 @@ http://search.maven.org/#artifactdetails%7Corg.talangsoft%7Crest-devtools%7C1.0.
     <version>1.0.0</version>
 </dependency>
 ```
+
+## Release Notes
+### 1.0.1:
+- Upgrade Spring to 1.2.2
+- RestUtils Param mapping simplified with java8 streams
+- ErrorDTO is converted to Immutable class with RestCreator constructor
+- Removed unused dependencies
+- Neo4j dependency scope is now "provided"

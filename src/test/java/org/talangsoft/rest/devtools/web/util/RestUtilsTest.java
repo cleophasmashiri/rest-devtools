@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class RestUtilsTest {
@@ -31,6 +32,19 @@ public class RestUtilsTest {
         assertEquals(HttpStatus.BAD_REQUEST, errorDTO.getErrorCode());
         assertEquals("message", errorDTO.getErrorMessage());
         assertEquals(params, errorDTO.getParams());
+        assertEquals("exmessage", errorDTO.getParams().get("exceptionMessage"));
+    }
+
+
+    public void createErrorDTOFromRestErrorWithNullInputParamsTest(){
+        RestError restError = new RestError("code","message", HttpStatus.BAD_REQUEST);
+        Map<String,Object> params = null;
+
+        ErrorDTO errorDTO = RestUtils.createErrorDTOFromRestError(restError, params, new Exception("exmessage"));
+        assertEquals(HttpStatus.BAD_REQUEST, errorDTO.getErrorCode());
+        assertEquals("message", errorDTO.getErrorMessage());
+        assertNotNull(errorDTO.getParams());
+        assertTrue(errorDTO.getParams().isEmpty());
         assertEquals("exmessage", errorDTO.getParams().get("exceptionMessage"));
     }
 }

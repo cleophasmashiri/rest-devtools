@@ -17,8 +17,7 @@ public abstract class SDN extends ToStringAllFieldsSupport implements Identifiab
     @GraphId
     private Long internalNodeId;
 
-    // NB For SDN equality we MUST include use the graphId or things
-    //    will not work out so well, ref "Entity Equality section" in
+    // graph Id must be included in equals:
     // http://docs.spring.io/spring-data/neo4j/docs/current/reference/html
     @Override
     public boolean equals(Object other) {
