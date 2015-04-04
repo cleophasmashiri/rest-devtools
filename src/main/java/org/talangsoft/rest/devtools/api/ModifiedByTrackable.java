@@ -8,11 +8,11 @@ import org.joda.time.DateTime;
  * @author Tamas Lang
  *
  */
-public interface ModifiedByTrackable {
+public interface ModifiedByTrackable<T> {
 
     String MODIFIED_BY_FIELD_NAME = "modified_by";
 
-    String getModifiedBy();
+    T getModifiedBy();
 
-    void setModifiedBy(String modifiedBy);
+    void setModifiedBy(T modifiedBy);
 }

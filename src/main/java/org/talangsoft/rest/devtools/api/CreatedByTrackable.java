@@ -6,12 +6,12 @@ package org.talangsoft.rest.devtools.api;
  * @author Tamas Lang
  *
  */
-public interface CreatedByTrackable {
+public interface CreatedByTrackable<T> {
 
     String CREATED_BY_FIELD_NAME = "created_by";
 
-    String getCreatedBy();
+    T getCreatedBy();
 
-    void setCreatedBy(String createdBy);
+    void setCreatedBy(T createdBy);
 
 }

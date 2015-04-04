@@ -1,4 +1,4 @@
 package org.talangsoft.rest.devtools.api;
 
-public interface CreatedModifiedTrackable extends CreatedTrackable, ModifiedTrackable{
+public interface CreatedModifiedTrackable<T> extends CreatedTrackable<T>, ModifiedTrackable<T>{
 }
