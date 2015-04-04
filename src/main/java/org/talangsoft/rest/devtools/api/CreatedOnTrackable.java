@@ -3,7 +3,7 @@ package org.talangsoft.rest.devtools.api;
 import org.joda.time.DateTime;
 
 /**
- * Interface to support modified on data tricking
+ * Interface to support modified on data tracking
  *
  * @author Tamas Lang
  *

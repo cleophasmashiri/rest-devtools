@@ -1,7 +1,7 @@
 package org.talangsoft.rest.devtools.api;
 
 /**
- * Interface to support modified on data tricking
+ * Interface to support modified on data tracking
  *
  * @author Tamas Lang
  *
