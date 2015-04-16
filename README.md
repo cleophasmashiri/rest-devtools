@@ -4,7 +4,7 @@ Developer tools for Spring based Rest applications.
 Offering solutions for:<br/>
 1, Logging, converting object to it's String representation<br/>
 2, Logging, define logger for components by interface default method<br/>
-3, Interfaces, Indentifiable, CreatedTrackable, etc.<br/>
+3, <a href="http://www.talangsoft.org/2015/04/04/rest-devtools-interfaces/" target="_blank">Interfaces, Indentifiable, CreatedTrackable, etc.</a><br/>
 4, Constants, profileConstants<br/>
 5, Domain entity parent classes<br/>
 6, Rest exception handling and resolving it to common ErrorDTO<br/>
