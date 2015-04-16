@@ -3,10 +3,8 @@ package org.talangsoft.rest.devtools.converter;
 import org.talangsoft.rest.devtools.domain.DTO;
 
 public class ADTO extends DTO {
-    private String text;
-
     private String name;
-
+    private String text;
     private String dtoOnlyProperty;
 
     public ADTO(String name, String text, String dtoOnlyProperty) {

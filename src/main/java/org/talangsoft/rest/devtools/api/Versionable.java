@@ -6,9 +6,10 @@ package org.talangsoft.rest.devtools.api;
  */
 public interface Versionable {
 
+    String VERSION_FIELD_NAME = "version";
+
     public Integer getVersion();
 
     public void setVersion(Integer version);
 
-  
 }
