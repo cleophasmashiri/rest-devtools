@@ -33,3 +33,6 @@ http://search.maven.org/#artifactdetails%7Corg.talangsoft%7Crest-devtools%7C1.0.
 ### 1.0.2:
 - Upgrade to Spring Boot 1.2.3
 - ModifiedBy and CreatedBy is generic typed to identify the author
+
+### 1.0.3:
+- Simplify modelmapper example
