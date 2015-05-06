@@ -78,14 +78,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler impleme
     @ExceptionHandler(RestException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> handleRestException(RestException ex){
-        logger().error("Handling rest exception", ex);
+        logger().debug("Handling rest exception", ex);
         return new ResponseEntity<ErrorDTO>(RestUtils.createErrorDTOFromRestError(ex.toRestError(), ex.getErrorParams()), ex.toRestError().getHttpStatus());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> handleException(Exception ex){
-        logger().error("Handling exception", ex);
+        logger().debug("Handling exception", ex);
         return new ResponseEntity<ErrorDTO>(RestUtils.createErrorDTOFromRestError(CommonRestErrors.GENERAL_SERVICE_ERROR.toRestError(),
                 RestUtils.createParams(PNV.toPNV("details", ex.getMessage()))),
                 CommonRestErrors.GENERAL_SERVICE_ERROR.getHttpStatus());
@@ -94,7 +94,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler impleme
     @ExceptionHandler(GatewayException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> handleGatewayException(GatewayException ex){
-        logger().error("Handling gateway exception", ex);
+        logger().debug("Handling gateway exception", ex);
         return new ResponseEntity<ErrorDTO>(ex.getErrorDTO(), ex.getHttpStatus());
     }
 
